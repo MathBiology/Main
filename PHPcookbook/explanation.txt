@@ -1,0 +1,1 @@
+The files here are adapted from, or directly from PHP Cookbook 3rd Edition by O'Reilly Press.
