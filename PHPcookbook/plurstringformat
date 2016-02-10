@@ -1,0 +1,5 @@
+// This will return either the plural or singular form; one can imagine how 
+// such conditional string replacement could be used in many ways! Here it 
+// is used when the output $number of hits from a search is defined.
+$number = 4;
+print "Your search returned $number " . ($number == 1 ? 'hit' : 'hits') . '.';
