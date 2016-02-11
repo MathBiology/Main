@@ -1,3 +1,4 @@
+// Reads in data in nice a clean HTML table.
 <?php include "db.php";?>
 <?php include "functions.php";?>
 
