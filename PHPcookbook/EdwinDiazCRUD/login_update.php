@@ -6,7 +6,7 @@
 <?php include "includes/header.php" ?>
 
 <div class="container">
-    //Creates table for posting updates to username, password, id.
+    //Updates database table for posting updates to username, password, id.
     <div class="col-sm-6">
         <h1 class="text-center">Update</h1>
           <form action="login_update.php" method="post">
@@ -22,7 +22,7 @@
               </div>
             
              <div class="form-group">
-               <label for="id">id:</label>
+               <label for="id">Id:</label>
                <select name="id" id="">
                   <?php 
                   showAllData();
