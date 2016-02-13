@@ -145,3 +145,142 @@ print "Benjamin Franklin was born on a " . $birthday->format('l') . ", " .
 if (1 == date('w')) {
 print "Welcome to the beginning of your work week." . "<br>";
 }
+?>
+<?php 
+// Validating whether a date is true
+// $ok is true - March 10, 1993 is a valid date
+$ok = checkdate(3, 10, 1993);
+echo (int)$ok . "<br>";
+// $not_ok is false - February 30, 1962 is not a valid date
+$not_ok = checkdate(2, 30, 1962);
+echo (int)$not_ok . "<br>";
+
+
+// Checks whether a user is between 18 and 122
+function checkbirthdate($month,$day,$year) {
+    
+    $min_age = 18;
+    $max_age = 122;
+    
+    if (! checkdate($month,$day,$year)) {
+        return false;
+    }
+    
+    $now = new DateTime(); // Right now vs. then below:
+    $then_formatted = sprintf("%d-%d-%d", $year, $month, $day);
+    $then = DateTime::createFromFormat("Y-n-j|",$then_formatted);
+    $age = $now->diff($then);
+    
+    if (($age->y < $min_age)|| ($age->y > $max_age)) {
+    return FALSE;
+    }
+    else {
+    return TRUE;
+    }
+    }   
+
+// check December 3, 1974
+if (checkbirthdate(12,3,1974)) {
+print "You may use this web site. <br>";
+} else {
+print "You are too young (or old, you should be dead!!) to proceed. <br>";
+}
+
+// Parsing Dates and times from strings
+$a = strtotime('march 10'); // defaults to the current year
+echo $a . "<br>";
+$b = strtotime('last thursday');
+echo $b . "<br>";
+$c = strtotime('now + 3 months');
+echo $c . "<br>";
+$a = strtotime('now');
+print date(DATE_RFC850, $a);
+print "<br>";
+// without time of day
+$a = strtotime('today');
+print date(DATE_RFC850, $a) . "<br>";
+
+//Monday, 12-May-14, no time.
+$a = strtotime('5/12/2014');
+print date(DATE_RFC850, $a);
+print "<br>";
+$a = strtotime('12 may 2014');
+print date(DATE_RFC850, $a) . "<br>";
+
+// Relative time and dates
+$a = strtotime('last thursday'); // Last Thursday!
+print date(DATE_RFC850, $a);
+print "<br>";
+$a = strtotime('2015-07-12 2pm + 1 month'); // Date plus a month
+print date(DATE_RFC850, $a) . "<br>";
+
+// set timezone default, for Sunday, 12 aug -12 at 14:00 EDT
+date_default_timezone_set('America/New_York');
+$a = strtotime('2012-07-12 2pm America/New_York + 1 month');
+print date(DATE_RFC850, $a) . "<br>";
+
+// Specific format for formatting - useful for converting between
+// European and North American formats
+$dates = array('01/02/2015', '03/06/2015', '09/08/2015');
+
+foreach ($dates as $date) {
+    $default = new DateTime($date);
+    $day_first = DateTime::createFromFormat('d/m/Y|', $date);
+    printf("The default interpretation is %s<br> but day-first is %s.<br>",
+    $default->format(DateTime::RFC850),
+    $day_first->format(DateTime::RFC850));
+}
+
+// Adding or subtracting from a date
+$birthday = new DateTime('March 10, 1975');
+// When is 40 weeks before $birthday?
+$human_gestation = new DateInterval('P40W');
+$birthday->sub($human_gestation);
+print $birthday->format(DateTime::RFC850);
+print "<br>";
+// What if it was an elephant, not a human? 616 days...
+$elephant_gestation = new DateInterval('P616D');
+$birthday->add($elephant_gestation);
+print $birthday->format(DateTime::RFC850) . "<br>";
+
+// What day will the election occur on? The Tuesday after the first
+// Monday in November!
+$year = 2016;
+$when = new DateTime("November 1, $year");
+if ($when->format('D') != 'Mon') {
+    $when->modify("next Monday");
+}
+$when->modify("next Tuesday");
+print "In $year, US election day is on the " .
+$when->format('jS') . ' day of November. <br>';
+
+// Daylight savings time manipulations
+$nowInNewYork = new DateTime('now', new DateTimeZone('America/New_York'));
+$nowInCalifornia = new DateTime('now', new DateTimeZone('America/Los_Angeles'));
+printf("It's %s in New York but %s in California.<br>",
+$nowInNewYork->format(DateTime::RFC850),
+$nowInCalifornia->format(DateTime::RFC850));
+
+// Specific case useful for me - using Marseille time!
+$now = time();
+date_default_timezone_set('America/New_York');
+print date(DATE_RFC850, $now);
+print " in New York<br>";
+date_default_timezone_set('Europe/Paris');
+print date(DATE_RFC850, $now). " in Marseille!!!<br>";
+
+//Creating a range that represents every day in august 2014
+// Start on August 1
+$start = new DateTime('August 1, 2014');
+// End date is exclusive, so this will stop on August 31
+$end = new DateTime('September 1, 2014');
+// Go 1 day at a time
+$interval = new DateInterval('P1D');
+$range1 = new DatePeriod($start, $interval, $end);
+/*
+foreach ($range1 as $d) {
+print "A day in August is " . $d->format('d') . "<br>";
+}*/
+
+
+?>
