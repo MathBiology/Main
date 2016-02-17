@@ -1,0 +1,1 @@
+String and array code from O'Reilly's PHP Cookbook
