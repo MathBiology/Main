@@ -1,2 +1,0 @@
-A storing place for Python code adapted from studying the O'Reilly's Python Cookbook,
-or from random Python code.
